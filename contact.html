@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Grow Academy Palakkad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@100..800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS RESET & BASE STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f172a;
+            --accent: #f59e0b;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --brand-green: #22c55e; 
+        }
+
+        body {
+            font-family: 'Anek Malayalam', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow: hidden; /* Locked for loader */
+        }
+
+        /* MANDATORY LOADING SCREEN */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        #loading-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .grow-symbol {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .grow-letter-animate {
+            display: inline-block;
+            animation: grow-up 1.5s infinite ease-in-out;
+        }
+
+        .grow-letter-animate:nth-child(2) { animation-delay: 0.2s; }
+        .grow-letter-animate:nth-child(3) { animation-delay: 0.4s; }
+        .grow-letter-animate:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes grow-up {
+            0%, 100% { transform: scaleY(1); color: var(--white); }
+            50% { transform: scaleY(1.5); color: var(--brand-green); }
+        }
+
+        .loading-bar-container {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .loading-bar-progress {
+            width: 0%;
+            height: 100%;
+            background: var(--brand-green);
+            animation: fill-progress 3s forwards linear;
+        }
+
+        @keyframes fill-progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* HEADER WITH ANIMATION */
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .header-bg-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .ball {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(15px);
+            opacity: 0;
+            animation: float-fade 10s infinite ease-in-out;
+        }
+
+        .ball-1 { width: 120px; height: 120px; background: rgba(245, 158, 11, 0.4); left: 5%; top: -20%; }
+        .ball-2 { width: 100px; height: 100px; background: rgba(59, 130, 246, 0.4); left: 35%; top: 40%; }
+        .ball-3 { width: 150px; height: 150px; background: rgba(239, 68, 68, 0.3); left: 65%; top: -10%; }
+
+        @keyframes float-fade {
+            0% { transform: translate(0, 0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translate(30px, -40px); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 { font-size: 1.5rem; text-transform: uppercase; }
+        .logo p { color: var(--accent); font-size: 0.8rem; }
+
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav ul li a { color: var(--white); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+
+        /* CONTACT PAGE CONTENT */
+        .page-header {
+            background: var(--primary);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .contact-section {
+            padding: 5rem 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .info-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .info-card h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--brand-green);
+            padding-left: 1rem;
+        }
+
+        .map-box {
+            width: 100%;
+            height: 300px;
+            background: #e2e8f0;
+            border-radius: 15px;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-weight: 700;
+            border: 2px dashed #cbd5e1;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .map-box:hover {
+            background: #f1f5f9;
+        }
+
+        .founder-profile {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .founder-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--primary);
+            color: #94a3b8;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid #334155;
+            padding-top: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading-screen">
+        <div class="grow-symbol">
+            <span class="grow-letter-animate">G</span>
+            <span class="grow-letter-animate">R</span>
+            <span class="grow-letter-animate">O</span>
+            <span class="grow-letter-animate">W</span>
+        </div>
+        <div class="loading-bar-container">
+            <div class="loading-bar-progress"></div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-bg-animation">
+            <div class="ball ball-1"></div>
+            <div class="ball ball-2"></div>
+            <div class="ball ball-3"></div>
+        </div>
+        <div class="container header-flex">
+            <div class="logo">
+                <h1>GROW ACADEMY</h1>
+                <p>പാലക്കാട് - മികച്ച പഠനകേന്ദ്രം</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="materials.html">Materials</a></li>
+                    <li><a href="faculty.html">Faculties</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>ഞങ്ങളുമായി ബന്ധപ്പെടുക</h1>
+            <p>നിങ്ങളുടെ സംശയങ്ങൾക്കും പ്രവേശനത്തിനുമായി താഴെ കാണുന്ന വിവരങ്ങൾ ഉപയോഗിക്കാം.</p>
+        </div>
+    </div>
+
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Left Side: Why and Who -->
+                <div>
+                    <div class="info-card">
+                        <h2>എന്തുകൊണ്ട് ഗ്രോ അക്കാദമി?</h2>
+                        <p>അധ്യാപകരാകാൻ ആഗ്രഹിക്കുന്ന ഓരോ ഉദ്യോഗാർത്ഥിക്കും മികച്ച പരിശീലനം ഉറപ്പുവരുത്തുക എന്നതാണ് ഞങ്ങളുടെ ലക്ഷ്യം. ആധുനിക പഠനരീതികളും അനുഭവസമ്പന്നരായ അധ്യാപകരും ഞങ്ങളെ വേറിട്ടു നിർത്തുന്നു.</p>
+                        
+                        <div class="founder-profile">
+                            <div class="founder-avatar">RK</div>
+                            <div>
+                                <h4 style="color: var(--primary);">Dr. Rajesh Kumar</h4>
+                                <p style="font-size: 0.85rem; color: var(--text-muted);">Founder & Visionary</p>
+                                <p style="font-size: 0.9rem; margin-top: 5px;">പാലക്കാട്ടെ വിദ്യാഭ്യാസ മേഖലയിൽ മാറ്റങ്ങൾ കൊണ്ടുവരാനായി ഗ്രോ അക്കാദമി സ്ഥാപിച്ചു.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Location -->
+                <div>
+                    <div class="info-card">
+                        <h2>ഞങ്ങളുടെ ഓഫീസ്</h2>
+                        <p>📍 Grow Academy, Opposite Town Bus Stand,<br>Palakkad, Kerala - 678001</p>
+                        <p style="margin-top: 10px;">📞 Phone: +91 0000 000000</p>
+                        <p>📧 Email: info@growacademypkd.com</p>
+                        
+                        <!-- Map Link Placeholder -->
+                        <a href="https://maps.google.com" target="_blank" class="map-box">
+                            VIEW ON GOOGLE MAPS
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 800;">Grow Academy</h4>
+                    <p>പാലക്കാട് ആസ്ഥാനമായി പ്രവർത്തിക്കുന്ന പ്രമുഖ അധ്യാപക പരിശീലന കേന്ദ്രം.</p>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 800;">Quick Links</h4>
+                    <p>📍 Palakkad, Kerala</p>
+                    <p>📞 +91 0000 000000</p>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 800;">Connect</h4>
+                    <p>WhatsApp: +91 0000 000000</p>
+                    <p>Social: Facebook / YouTube</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Grow Academy Palakkad. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loading-screen');
+                loader.classList.add('fade-out');
+                setTimeout(() => { document.body.style.overflow = 'auto'; }, 800);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

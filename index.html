@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grow Academy Palakkad - Teachers Training</title>
+    <!-- Importing Anek Malayalam from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@100..800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS RESET & BASE STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f172a;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --dark-green: #064e3b; 
+            --brand-green: #22c55e; 
+        }
+
+        body {
+            font-family: 'Anek Malayalam', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            font-size: 15px; 
+            overflow: hidden; /* Prevent scroll while loading */
+        }
+
+        /* MANDATORY LOADING SCREEN WITH SMOOTH TRANSITION */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* Smooth transition for both opacity and background color */
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        visibility 0.8s;
+        }
+
+        /* Class applied via JS to trigger the transparent transition */
+        #loading-screen.fade-out {
+            opacity: 0;
+            background-color: transparent;
+            backdrop-filter: blur(10px); /* Optional: adds a nice blur effect as it fades */
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .grow-symbol {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .grow-letter-animate {
+            display: inline-block;
+            animation: grow-up 1.5s infinite ease-in-out;
+        }
+
+        .grow-letter-animate:nth-child(2) { animation-delay: 0.2s; }
+        .grow-letter-animate:nth-child(3) { animation-delay: 0.4s; }
+        .grow-letter-animate:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes grow-up {
+            0%, 100% { transform: scaleY(1); color: var(--white); }
+            50% { transform: scaleY(1.5); color: var(--brand-green); }
+        }
+
+        .loading-bar-container {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .loading-bar-progress {
+            width: 0%;
+            height: 100%;
+            background: var(--brand-green);
+            animation: fill-progress 3s forwards linear;
+        }
+
+        @keyframes fill-progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .loading-text {
+            color: var(--white);
+            margin-top: 15px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+
+        /* HEADER */
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1.2rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            overflow: hidden; 
+        }
+
+        .header-bg-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .ball {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(15px);
+            opacity: 0;
+            animation: float-fade 10s infinite ease-in-out;
+        }
+
+        .ball-1 { width: 120px; height: 120px; background: rgba(245, 158, 11, 0.4); left: 5%; top: -20%; animation-delay: 0s; }
+        .ball-2 { width: 100px; height: 100px; background: rgba(59, 130, 246, 0.4); left: 35%; top: 40%; animation-delay: 2.5s; }
+        .ball-3 { width: 150px; height: 150px; background: rgba(239, 68, 68, 0.3); left: 65%; top: -10%; animation-delay: 5s; }
+        .ball-4 { width: 90px; height: 90px; background: rgba(16, 185, 129, 0.35); left: 85%; top: 30%; animation-delay: 1.5s; }
+        .ball-5 { width: 110px; height: 110px; background: rgba(168, 85, 247, 0.3); left: 20%; top: 10%; animation-delay: 7s; }
+
+        @keyframes float-fade {
+            0% { transform: translate(0, 0) scale(1); opacity: 0; }
+            25% { opacity: 0.7; }
+            75% { opacity: 0.7; }
+            100% { transform: translate(50px, -60px) scale(1.2); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            text-transform: uppercase;
+        }
+
+        .logo p {
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: -2px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover { color: var(--accent); }
+
+        /* MARQUEE */
+        .marquee-container {
+            background-color: #ef4444;
+            color: var(--white);
+            padding: 8px 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 25s linear infinite;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* NOTIFICATION PANEL */
+        .notification-panel {
+            background-color: #fffbeb;
+            border-bottom: 1px solid #fde68a;
+            padding: 12px 0;
+        }
+
+        .notif-link {
+            text-decoration: none;
+            display: block;
+            transition: background 0.2s ease;
+        }
+
+        .notif-link:hover { background-color: #fef3c7; }
+
+        .notif-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+            font-size: 0.9rem; 
+            color: #92400e;
+            font-weight: 600;
+        }
+
+        .notif-badge {
+            background: #f59e0b;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        /* BLINKING */
+        .blink-container {
+            animation: blinker 1.5s linear infinite;
+        }
+
+        .blink-badge {
+            background: #ef4444;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0.3; }
+        }
+
+        /* HERO SECTION */
+        .hero-v2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 4rem auto;
+            align-items: center;
+        }
+
+        .hero-card {
+            background: var(--white);
+            padding: 3.5rem;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 23, 42, 0.05);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-card h2 {
+            color: var(--primary);
+            font-size: 2.4rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .hero-card p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(135deg, var(--dark-green), #065f46);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -10px rgba(6, 78, 59, 0.3);
+        }
+
+        .hero-visual::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .visual-overlay {
+            z-index: 1;
+            text-align: center;
+            color: white;
+        }
+
+        .visual-overlay .big-logo {
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
+            font-family: 'Inter', sans-serif;
+        }
+
+        .green-letter {
+            color: var(--brand-green);
+        }
+
+        /* BUTTON */
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background-color: #25d366;
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px -5px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-whatsapp:hover {
+            transform: scale(1.05) translateY(-3px);
+            background-color: #128c7e;
+            box-shadow: 0 15px 30px -5px rgba(37, 211, 102, 0.6);
+        }
+
+        /* GRID SECTIONS */
+        .section-title {
+            text-align: center;
+            margin: 4rem 0 2.5rem;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .card-link { 
+            text-decoration: none; 
+            color: inherit; 
+            display: block;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card:hover { 
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+
+        .card h4 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--primary);
+            color: #94a3b8;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid #334155;
+            padding-top: 2rem;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 968px) {
+            .hero-v2 { grid-template-columns: 1fr; margin: 2rem auto; }
+            .hero-card { padding: 2.5rem; text-align: center; }
+            .hero-visual { height: 250px; order: -1; }
+            .hero-card h2 { font-size: 2rem; }
+        }
+
+        @media (max-width: 640px) {
+            .header-flex { flex-direction: column; gap: 1rem; text-align: center; }
+            nav ul { justify-content: center; flex-wrap: wrap; }
+            .hero-card { padding: 1.5rem; }
+            .visual-overlay .big-logo { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen Overlay -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <div class="grow-symbol">
+                <span class="grow-letter-animate">G</span>
+                <span class="grow-letter-animate">R</span>
+                <span class="grow-letter-animate">O</span>
+                <span class="grow-letter-animate">W</span>
+            </div>
+            <div class="loading-bar-container">
+                <div class="loading-bar-progress"></div>
+            </div>
+            <p class="loading-text">Preparing your future</p>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-bg-animation">
+            <div class="ball ball-1"></div>
+            <div class="ball ball-2"></div>
+            <div class="ball ball-3"></div>
+            <div class="ball ball-4"></div>
+            <div class="ball ball-5"></div>
+        </div>
+        <div class="container header-flex">
+            <a href="#" class="logo">
+                <h1>GROW ACADEMY</h1>
+                <p>പാലക്കാട് - അധ്യാപകർക്കായി ഒരു മികച്ച പഠനകേന്ദ്രം</p>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="materials.html">Materials</a></li>
+                    <li><a href="faculty.html">Faculties</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="marquee-container">
+        <div class="marquee-text">
+            📢 പുതിയ അറിയിപ്പുകൾ: K-TET കാറ്റഗറി 1, 2, 3, 4 പുതിയ ഓൺലൈൻ ബാച്ചുകൾ ആരംഭിച്ചു... ഡിപ്പാർട്ട്മെന്റൽ ടെസ്റ്റ് (MOP, KER) സ്പെഷ്യൽ ക്ലാസുകൾ ഇപ്പോൾ ലഭ്യമാണ്...
+        </div>
+    </div>
+
+    <div class="notification-panel">
+        <div class="container">
+            <a href="#" class="notif-link">
+                <div class="notif-line blink-container">
+                    <span class="notif-badge blink-badge">Live</span>
+                    <span>കെ-ടെറ്റ് പരീക്ഷാ തീയതികൾ പ്രഖ്യാപിച്ചു. ഉടൻ രജിസ്റ്റർ ചെയ്യുക.</span>
+                </div>
+            </a>
+            <a href="#" class="notif-link">
+                <div class="notif-line">
+                    <span class="notif-badge" style="background:#10b981;">New</span>
+                    <span>ഇന്നത്തെ സ്പെഷ്യൽ സൈക്കോളജി ലൈവ് ക്ലാസ്സ് വൈകുന്നേരം 7 മണിക്ക്.</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="container" id="home">
+        <div class="hero-v2">
+            <div class="hero-card">
+                <h2>മികച്ച അധ്യാപകരാകാൻ Grow Academy-യോടൊപ്പം ചേരൂ</h2>
+                <p>K-TET (1, 2, 3, 4) പരീക്ഷകൾക്കും ഡിപ്പാർട്ട്മെന്റൽ ടെസ്റ്റുകൾക്കും ഞങ്ങൾ മികച്ച പരിശീലനം നൽകുന്നു. ഓൺലൈൻ, ഓഫ്‌ലൈൻ ക്ലാസുകൾ ലഭ്യമാണ്.</p>
+                <a href="https://wa.me/910000000000?text=I%20want%20to%20join%20Grow%20Academy" target="_blank" class="btn-whatsapp">
+                    <span>ഇന്ന് തന്നെ ജോയിൻ ചെയ്യൂ</span>
+                </a>
+            </div>
+            <div class="hero-visual">
+                <div class="visual-overlay">
+                    <div class="big-logo">
+                        <span class="green-letter">G</span>R<span class="green-letter">O</span>W
+                    </div>
+                    <p style="font-weight: 700; letter-spacing: 3px; opacity: 0.8; font-size: 1rem;">PALAKKAD CENTER</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="materials">
+        <h3 class="section-title">പഠന സാമഗ്രികൾ (Materials)</h3>
+        <div class="grid-container">
+            <a href="materials.html" class="card-link">
+                <div class="card">
+                    <h4>K-TET Cat 1 & 2</h4>
+                    <p>LP/UP അധ്യാപകർക്കായി പ്രത്യേകം തയ്യാറാക്കിയ സിലബസ് അധിഷ്ഠിത ക്ലാസുകൾ.</p>
+                </div>
+            </a>
+            <a href="materials.html" class="card-link">
+                <div class="card">
+                    <h4>K-TET Cat 3 & 4</h4>
+                    <p>HS & ലാംഗ്വേജ് അധ്യാപകർക്കായി ആഴത്തിലുള്ള വിഷയപഠനം ഉറപ്പാക്കുന്നു.</p>
+                </div>
+            </a>
+            <a href="materials.html" class="card-link">
+                <div class="card">
+                    <h4>Dept. Tests</h4>
+                    <p>MOP, KER പരീക്ഷകൾക്ക് എളുപ്പത്തിൽ പഠിക്കാവുന്ന തരത്തിലുള്ള നോട്സുകൾ.</p>
+                </div>
+            </a>
+            <a href="materials.html" class="card-link">
+                <div class="card">
+                    <h4>Online Coaching</h4>
+                    <p>നിങ്ങളുടെ സൗകര്യാനുസരണം വീട്ടിലിരുന്ന് തന്നെ മികച്ച ക്ലാസുകൾ കേൾക്കാം.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 800;">Grow Academy</h4>
+                    <p>പാലക്കാട് ആസ്ഥാനമായി പ്രവർത്തിക്കുന്ന പ്രമുഖ അധ്യാപക പരിശീലന കേന്ദ്രം.</p>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 800;">Quick Links</h4>
+                    <p>📍 Palakkad, Kerala</p>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 800;">Connect</h4>
+                    <p>WhatsApp: +91 0000 000000</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Grow Academy Palakkad. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth Opaque-to-Transparent Loading transition
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loading-screen');
+                // Trigger transition by adding the fade-out class
+                loader.classList.add('fade-out');
+                
+                // Fully re-enable page interactions after transition completes
+                setTimeout(() => {
+                    document.body.style.overflow = 'auto';
+                }, 800); 
+            }, 3000); 
+        });
+    </script>
+
+</body>
+</html>

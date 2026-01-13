@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Faculty - Grow Academy Palakkad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@100..800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS RESET & BASE STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f172a;
+            --accent: #f59e0b;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --brand-green: #22c55e; 
+        }
+
+        body {
+            font-family: 'Anek Malayalam', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow: hidden; /* Locked for loader */
+        }
+
+        /* MANDATORY LOADING SCREEN */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        visibility 0.8s;
+        }
+
+        #loading-screen.fade-out {
+            opacity: 0;
+            background-color: transparent;
+            backdrop-filter: blur(10px);
+            visibility: hidden;
+        }
+
+        .grow-symbol {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .grow-letter-animate {
+            display: inline-block;
+            animation: grow-up 1.5s infinite ease-in-out;
+        }
+
+        .grow-letter-animate:nth-child(2) { animation-delay: 0.2s; }
+        .grow-letter-animate:nth-child(3) { animation-delay: 0.4s; }
+        .grow-letter-animate:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes grow-up {
+            0%, 100% { transform: scaleY(1); color: var(--white); }
+            50% { transform: scaleY(1.5); color: var(--brand-green); }
+        }
+
+        .loading-bar-container {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .loading-bar-progress {
+            width: 0%;
+            height: 100%;
+            background: var(--brand-green);
+            animation: fill-progress 3s forwards linear;
+        }
+
+        @keyframes fill-progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* HEADER WITH ANIMATION */
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .header-bg-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .ball {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(15px);
+            opacity: 0;
+            animation: float-fade 10s infinite ease-in-out;
+        }
+
+        .ball-1 { width: 120px; height: 120px; background: rgba(245, 158, 11, 0.4); left: 5%; top: -20%; animation-delay: 0s; }
+        .ball-2 { width: 100px; height: 100px; background: rgba(59, 130, 246, 0.4); left: 35%; top: 40%; animation-delay: 2.5s; }
+        .ball-3 { width: 150px; height: 150px; background: rgba(239, 68, 68, 0.3); left: 65%; top: -10%; animation-delay: 5s; }
+        .ball-4 { width: 90px; height: 90px; background: rgba(16, 185, 129, 0.35); left: 85%; top: 30%; animation-delay: 1.5s; }
+        .ball-5 { width: 110px; height: 110px; background: rgba(168, 85, 247, 0.3); left: 20%; top: 10%; animation-delay: 7s; }
+
+        @keyframes float-fade {
+            0% { transform: translate(0, 0) scale(1); opacity: 0; }
+            25% { opacity: 0.7; }
+            75% { opacity: 0.7; }
+            100% { transform: translate(50px, -60px) scale(1.2); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 { font-size: 1.5rem; text-transform: uppercase; }
+        .logo p { color: var(--accent); font-size: 0.8rem; }
+
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav ul li a { color: var(--white); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s; }
+        nav ul li a:hover { color: var(--accent); }
+
+        /* FACULTY CONTENT */
+        .page-header {
+            background: var(--primary);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 5rem;
+        }
+
+        .faculty-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f1f5f9;
+            text-align: center;
+            padding-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faculty-card:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Slide-in Effect for Image */
+        .image-container {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background: #e2e8f0;
+            position: relative;
+        }
+
+        .faculty-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translateX(-100%); /* Initial state */
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Trigger for animation via JS */
+        .image-container.visible .faculty-img {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .faculty-info {
+            padding: 1.5rem;
+        }
+
+        .faculty-name {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .faculty-role {
+            display: inline-block;
+            background: #fffbeb;
+            color: #92400e;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .faculty-role.founder {
+            background: var(--brand-green);
+            color: white;
+        }
+
+        .faculty-bio {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            padding: 0 1rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--primary);
+            color: #94a3b8;
+            padding: 4rem 0 2rem;
+            margin-top: 5rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid #334155;
+            padding-top: 2rem;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 640px) {
+            .header-flex { flex-direction: column; text-align: center; gap: 1rem; }
+            nav ul { justify-content: center; flex-wrap: wrap; }
+            .faculty-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading-screen">
+        <div class="grow-symbol">
+            <span class="grow-letter-animate">G</span>
+            <span class="grow-letter-animate">R</span>
+            <span class="grow-letter-animate">O</span>
+            <span class="grow-letter-animate">W</span>
+        </div>
+        <div class="loading-bar-container">
+            <div class="loading-bar-progress"></div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-bg-animation">
+            <div class="ball ball-1"></div>
+            <div class="ball ball-2"></div>
+            <div class="ball ball-3"></div>
+            <div class="ball ball-4"></div>
+            <div class="ball ball-5"></div>
+        </div>
+        <div class="container header-flex">
+            <div class="logo">
+                <h1>GROW ACADEMY</h1>
+                <p>പാലക്കാട് - മികച്ച പഠനകേന്ദ്രം</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="materials.html">Materials</a></li>
+                    <li><a href="faculties.html">Faculties</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>ഞങ്ങളുടെ അധ്യാപകർ</h1>
+            <p>മികച്ച പരിശീലനത്തിലൂടെ നിങ്ങളെ വിജയത്തിലേക്ക് നയിക്കുന്ന വിദഗ്ധരായ അധ്യാപകർ.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="faculty-grid">
+            <!-- Founder -->
+            <div class="faculty-card">
+                <div class="image-container">
+                    <!-- Dummy Image using a colored placeholder -->
+                    <div class="faculty-img" style="background: linear-gradient(45deg, #0f172a, #334155); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: 800;">FOUNDER</div>
+                </div>
+                <div class="faculty-info">
+                    <span class="faculty-role founder">Founder & Director</span>
+                    <h3 class="faculty-name">Dr. Rajesh Kumar</h3>
+                    <p class="faculty-bio">വിദ്യാഭ്യാസ രംഗത്ത് 15 വർഷത്തെ പ്രവൃത്തിപരിചയം. ആയിരക്കണക്കിന് അധ്യാപകരെ സൃഷ്ടിച്ച മികവ്.</p>
+                </div>
+            </div>
+
+            <!-- Faculty 1 -->
+            <div class="faculty-card">
+                <div class="image-container">
+                    <div class="faculty-img" style="background: linear-gradient(45deg, #064e3b, #059669); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: 800;">FACULTY</div>
+                </div>
+                <div class="faculty-info">
+                    <span class="faculty-role">Psychology Expert</span>
+                    <h3 class="faculty-name">Mrs. Anitha S.</h3>
+                    <p class="faculty-bio">K-TET സൈക്കോളജി വിഭാഗത്തിൽ ലളിതമായ രീതിയിലുള്ള ക്ലാസുകൾക്ക് നേതൃത്വം നൽകുന്നു.</p>
+                </div>
+            </div>
+
+            <!-- Faculty 2 -->
+            <div class="faculty-card">
+                <div class="image-container">
+                    <div class="faculty-img" style="background: linear-gradient(45deg, #7c2d12, #ea580c); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: 800;">FACULTY</div>
+                </div>
+                <div class="faculty-info">
+                    <span class="faculty-role">Malayalam Pedagogy</span>
+                    <h3 class="faculty-name">Mr. Sunil Das</h3>
+                    <p class="faculty-bio">ഭാഷാ പഠനത്തിലും പെഡഗോഗിയിലും മികച്ച പ്രാവീണ്യം തെളിയിച്ച അധ്യാപകൻ.</p>
+                </div>
+            </div>
+
+            <!-- Faculty 3 -->
+            <div class="faculty-card">
+                <div class="image-container">
+                    <div class="faculty-img" style="background: linear-gradient(45deg, #1e3a8a, #2563eb); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: 800;">FACULTY</div>
+                </div>
+                <div class="faculty-info">
+                    <span class="faculty-role">Dept. Test Trainer</span>
+                    <h3 class="faculty-name">Mr. Manoj V.</h3>
+                    <p class="faculty-bio">MOP, KER തുടങ്ങിയ ഡിപ്പാർട്ട്മെന്റൽ ടെസ്റ്റുകളിൽ കൃത്യമായ പരിശീലനം നൽകുന്നു.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 800;">Grow Academy</h4>
+                    <p>പാലക്കാട് ആസ്ഥാനമായി പ്രവർത്തിക്കുന്ന പ്രമുഖ അധ്യാപക പരിശീലന കേന്ദ്രം.</p>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 800;">Quick Links</h4>
+                    <p>📍 Palakkad, Kerala</p>
+                    <p>📞 +91 0000 000000</p>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 800;">Connect</h4>
+                    <p>WhatsApp: +91 0000 000000</p>
+                    <p>Social: Facebook / YouTube</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Grow Academy Palakkad. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Trigger for slide-in effect and loader
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loading-screen');
+                loader.classList.add('fade-out');
+                
+                // Once loading screen is gone, trigger slide-in
+                setTimeout(() => {
+                    document.body.style.overflow = 'auto';
+                    const containers = document.querySelectorAll('.image-container');
+                    containers.forEach((container, index) => {
+                        setTimeout(() => {
+                            container.classList.add('visible');
+                        }, index * 200); // Staggered entry
+                    });
+                }, 800);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
